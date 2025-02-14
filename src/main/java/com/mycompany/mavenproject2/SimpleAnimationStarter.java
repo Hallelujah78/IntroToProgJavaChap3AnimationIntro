@@ -37,20 +37,53 @@ public class SimpleAnimationStarter extends Application {
 
         // frame is 800 x 600 (w x h)
         // fill entire context with lightgray.
-        g.setFill(Color.LIGHTGRAY);
+        g.setFill(Color.BLACK);
         g.fillRect(0, 0, width, height); // First, fill the entire image with a background color!
 
-        // draw a rectangle
-        g.setFill(Color.BLACK);
+        /*
+        The left edge of the rectangle hits the right side of the screen on frame 800.
+        We have access to the updated frame number each time drawFrame is called.
+        while rectangle moves to right first time:
+        frameNumber % 800 = frameNumber.
 
-        g.setFill(Color.BLACK);
-        double inset = height / 7;
-        g.setFill(Color.TRANSPARENT);
+         */
+        System.out.println("width - frame % 800: " + (width - frameNumber % 800));
+
+        // Set fill to black.
+        g.setFill(Color.WHITE);
+
+        // Side length of the square.
+        int size = 100;
+        // The speed of the animation.
+        int speed = 1;
+
+        for (int i = 0; i <= 6; i++) {
+            /* Using Math.floor(frameNumber / width) we get 0, 1, 2, 3, 4 ....
+        By testing if it is odd or even, we can oscillate the motion.
+             */
+            // Update speed.
+            speed = speed + i;
+
+            if (Math.floor(frameNumber * speed / (width - size)) % 2 == 0) {
+                // Move rect across the screen as frame number increases.
+                g.fillRect((frameNumber * speed % (width - size)), size * i, size, size);
+            } else {
+                g.fillRect((width - size - (frameNumber * speed % (width - size))), size * i, size, size);
+            }
+
+        }
+
+//        double inset = height / 10;
         // set the stroke
-        g.strokeRect(inset / 2, inset / 2, width - inset, height - inset);
-//        g.fillText("Frame number " + frameNumber, 40, 50);
-//        g.fillText(String.format("Elapsed Time: %1.1f seconds", elapsedSeconds), 40, 80);
-
+//        for (int i = 0; i < inset; i++) {
+//            g.strokeRect(inset / 2 * i, inset / 2 * i, width - inset * i, height - inset * i);
+//
+//        }
+        g.setFill(Color.WHITE);
+        g.setStroke(Color.WHITE);
+//         g.strokeRect(inset / 2 * 9, inset / 2 * 9, width - inset * 9, height - inset * 9);
+        g.fillText("Frame number " + frameNumber, 40, 50);
+        g.fillText(String.format("Elapsed Time: %1.1f seconds", elapsedSeconds), 40, 80);
     }
 
     //------ Implementation details: DO NOT EXPECT TO UNDERSTAND THIS ------
